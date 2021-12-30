@@ -6,15 +6,27 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import Tooltip from '@mui/material/Tooltip';
 import { IconButton } from '@mui/material';
 import { Delete, MoreVert } from '@mui/icons-material';
+import deleteDocument from '../../firebase/deleteDocument';
+import deleteFile from '../../firebase/deleteFile';
 
-export default function Options() {
+export default function Options({ imageId }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+  const currentUser = { uid: 'userId' };
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
+  };
+  const handleDelete = async () => {
+    try {
+      await deleteDocument('gallery', imageId);
+      await deleteFile(`gallery/${currentUser.uid}/${imageId}`);
+    } catch (error) {
+      alert(error.message);
+      console.log(error);
+    }
   };
   return (
     <React.Fragment>
@@ -68,7 +80,7 @@ export default function Options() {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem>
+        <MenuItem onClick={handleDelete}>
           <ListItemIcon>
             <Delete />
           </ListItemIcon>
