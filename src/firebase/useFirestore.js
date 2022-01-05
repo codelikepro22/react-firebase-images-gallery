@@ -1,9 +1,11 @@
 import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
+import { useAuth } from '../context/AuthContext';
 import { db } from './config';
 
 const useFirestore = (collectionName = 'gallery') => {
   const [documents, setDocuments] = useState([]);
+  const { setAlert } = useAuth();
   useEffect(() => {
     const q = query(
       collection(db, collectionName),
@@ -19,10 +21,17 @@ const useFirestore = (collectionName = 'gallery') => {
         setDocuments(docs);
       },
       (error) => {
-        alert(error.message);
+        setAlert({
+          isAlert: true,
+          severity: 'error',
+          message: error.message,
+          timeout: 8000,
+          location: 'main',
+        });
         console.log(error);
       }
     );
+
     return () => unsubscribe();
   }, [collectionName]);
 

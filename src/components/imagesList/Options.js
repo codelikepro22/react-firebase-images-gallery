@@ -8,11 +8,12 @@ import { IconButton } from '@mui/material';
 import { Delete, MoreVert } from '@mui/icons-material';
 import deleteDocument from '../../firebase/deleteDocument';
 import deleteFile from '../../firebase/deleteFile';
+import { useAuth } from '../../context/AuthContext';
 
 export default function Options({ imageId }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-  const currentUser = { uid: 'userId' };
+  const { currentUser, setAlert } = useAuth();
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -24,7 +25,13 @@ export default function Options({ imageId }) {
       await deleteDocument('gallery', imageId);
       await deleteFile(`gallery/${currentUser.uid}/${imageId}`);
     } catch (error) {
-      alert(error.message);
+      setAlert({
+        isAlert: true,
+        severity: 'error',
+        message: error.message,
+        timeout: 8000,
+        location: 'main',
+      });
       console.log(error);
     }
   };

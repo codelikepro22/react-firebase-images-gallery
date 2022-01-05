@@ -18,7 +18,7 @@ function srcset(image, size, rows = 1, cols = 1) {
 }
 
 export default function ImagesList() {
-  const { documents } = useFirestore();
+  const { documents } = useFirestore('gallery');
   return (
     <SimpleReactLightbox>
       <SRLWrapper>
@@ -43,7 +43,7 @@ export default function ImagesList() {
                 '&:hover': { opacity: 1 },
               }}
             >
-              <Options imageId={item.id} />
+              <Options imageId={item?.id} />
               <img
                 {...srcset(
                   item?.data?.imageURL,
@@ -55,7 +55,7 @@ export default function ImagesList() {
                     index - Math.floor(index / pattern.length) * pattern.length
                   ].cols
                 )}
-                alt={item?.data?.uName || item?.data?.uEmail}
+                alt={item?.data?.uName || item?.data?.uEmail?.split('@')[0]}
                 loading="lazy"
               />
               <Typography
@@ -74,7 +74,7 @@ export default function ImagesList() {
                 {moment(item?.data?.timestamp?.toDate()).fromNow()}
               </Typography>
               <Tooltip
-                title={item?.data?.uName || item?.data?.uEmail}
+                title={item?.data?.uName || item?.data?.uEmail?.split('@')[0]}
                 sx={{
                   position: 'absolute',
                   bottom: '3px',
