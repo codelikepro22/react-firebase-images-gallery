@@ -17,7 +17,7 @@ const ProgressItem = ({ file }) => {
       try {
         const url = await uploadFileProgress(
           file,
-          `gallery/${currentUser.uid}`,
+          `gallery/${currentUser?.uid}`,
           imageName,
           setProgress
         );

@@ -43,7 +43,7 @@ const DeleteAccount = () => {
     <form onSubmit={handleSubmit}>
       <DialogContent dividers>
         <DialogContentText>
-          Are you sure you want to delete your account? This action will delte
+          Are you sure you want to delete your account? This action will delete
           all of your files and records
         </DialogContentText>
       </DialogContent>
