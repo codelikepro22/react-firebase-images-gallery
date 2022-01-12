@@ -5,7 +5,8 @@ import { useState } from 'react';
 const PasswordField = ({
   passwordRef,
   id = 'password',
-  label = 'password',
+  label = 'Password',
+  autoFocus = true,
 }) => {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -17,7 +18,7 @@ const PasswordField = ({
   };
   return (
     <TextField
-      autoFocus
+      autoFocus={autoFocus}
       margin="normal"
       variant="standard"
       id={id}

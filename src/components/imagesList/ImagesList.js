@@ -4,9 +4,9 @@ import ImageListItem from '@mui/material/ImageListItem';
 import SimpleReactLightbox, { SRLWrapper } from 'simple-react-lightbox';
 import { Avatar, Tooltip, Typography } from '@mui/material';
 import moment from 'moment';
-import profileImg from '../../img/profile.jpeg';
 import Options from './Options';
 import useFirestore from '../../firebase/useFirestore';
+import { useAuth } from '../../context/AuthContext';
 
 function srcset(image, size, rows = 1, cols = 1) {
   return {
@@ -18,6 +18,7 @@ function srcset(image, size, rows = 1, cols = 1) {
 }
 
 export default function ImagesList() {
+  const { currentUser } = useAuth();
   const { documents } = useFirestore('gallery');
   return (
     <SimpleReactLightbox>
@@ -43,7 +44,9 @@ export default function ImagesList() {
                 '&:hover': { opacity: 1 },
               }}
             >
-              <Options imageId={item?.id} />
+              {currentUser?.uid === item?.data?.uid && (
+                <Options imageId={item?.id} />
+              )}
               <img
                 {...srcset(
                   item?.data?.imageURL,
